@@ -10,7 +10,7 @@ namespace App.Domain.Interfaces.Application
     public interface IPessoaService
     {
         Pessoa BuscaPorId(Guid id);
-        List<Pessoa> listaPessoas();
+        List<Pessoa> listaPessoas(string nome, int pesoMinimo, int pesoMaximo);
         void Salvar(Pessoa obj);
     }
 }

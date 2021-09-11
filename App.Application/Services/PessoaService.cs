@@ -23,9 +23,12 @@ namespace App.Application.Services
             return obj;
         }
 
-        public List<Pessoa> listaPessoas()
+        public List<Pessoa> listaPessoas(string nome, int pesoMinimo, int pesoMaximo)
         {
-            return _repository.Query(x => 1 == 1) 
+            var query= _repository.Query(x => 
+            x.Nome.ToUpper().Contains(nome.ToUpper()) 
+            && (pesoMinimo == 0 || x.Peso >= pesoMinimo )
+            && (pesoMaximo == 0 || x.Peso < pesoMaximo)) 
                 .Select(p => new Pessoa
                 {
                     Id = p.Id,
@@ -35,7 +38,8 @@ namespace App.Application.Services
                     {
                         Nome = p.Cidade.Nome
                     }
-                }).ToList();
+                }).OrderByDescending(x => x.Nome);
+            return query.ToList()
         }
 
         public void Salvar(Pessoa obj)
