@@ -20,10 +20,30 @@ namespace App.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public JsonResult Get()
+        [HttpGet("ListaPessoas")]
+        public JsonResult ListaPessoas()
         {
-            return Json(new {lista = _service.listaPessoas() });
+            return Json(new { Pessoas = _service.listaPessoas() });
+        }
+
+        [HttpGet("BuscaPorId")]
+        public JsonResult BuscaPorId(Guid id)
+        {
+            return Json(new { Pessoa = _service.BuscaPorId(id) });
+        }
+
+        [HttpGet("Salvar")]
+        public JsonResult Salvar(string nome, int peso, DateTime dataNascimento, bool ativo)
+        {
+            var obj = new Pessoa
+            {
+                Nome = nome,
+                DataNascimento = dataNascimento,
+                Peso = peso,
+                Ativo = ativo
+            };
+            _service.Salvar(obj);
+            return Json(true);
         }
     }
 }

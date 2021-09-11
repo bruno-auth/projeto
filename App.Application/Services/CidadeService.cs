@@ -9,32 +9,38 @@ using System.Threading.Tasks;
 
 namespace App.Application.Services
 {
-    public class PessoaService : IPessoaService
+    public class CidadeService : ICidadeService
     {
-        private IRepositoryBase<Pessoa> _repository { get; set; }
-        public PessoaService(IRepositoryBase<Pessoa> repository)
+        private IRepositoryBase<Cidade> _repository { get; set; }
+        public CidadeService(IRepositoryBase<Cidade> repository)
         {
             _repository = repository;
         }
 
-        public Pessoa BuscaPorId(Guid id)
+        public Cidade BuscaPorId(Guid id)
         {
             var obj = _repository.Query(x => x.Id == id).FirstOrDefault();
             return obj;
         }
 
-        public List<Pessoa> listaPessoas()
+        public List<Cidade> listaCidades()
         {
             return _repository.Query(x => 1 == 1).ToList();
         }
 
-        public void Salvar(Pessoa obj)
+        public void Salvar(Cidade obj)
         {
             if (String.IsNullOrEmpty(obj.Nome))
             {
                 throw new Exception("Informe o  Nome!");
             }
             _repository.Save(obj);
+            _repository.SaveChanges();
+        }
+
+        public  void Remover(Guid id)
+        {
+            _repository.Delete(id);
             _repository.SaveChanges();
         }
     }
