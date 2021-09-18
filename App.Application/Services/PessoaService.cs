@@ -25,6 +25,10 @@ namespace App.Application.Services
 
         public List<Pessoa> listaPessoas(string nome, int pesoMinimo, int pesoMaximo)
         {
+            if (nome == null)
+            {
+                nome = "";
+            }
             var query= _repository.Query(x => 
             x.Nome.ToUpper().Contains(nome.ToUpper()) 
             && (pesoMinimo == 0 || x.Peso >= pesoMinimo )
@@ -34,6 +38,7 @@ namespace App.Application.Services
                     Id = p.Id,
                     Nome = p.Nome,
                     Peso = p.Peso,
+                    Ativo = p.Ativo,
                     Cidade = new Cidade
                     {
                         Nome = p.Cidade.Nome
@@ -44,10 +49,6 @@ namespace App.Application.Services
 
         public void Salvar(Pessoa obj)
         {
-            if (String.IsNullOrEmpty(obj.Nome))
-            {
-                throw new Exception("Informe o  Nome!");
-            }
             _repository.Save(obj);
             _repository.SaveChanges();
         }

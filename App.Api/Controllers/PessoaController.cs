@@ -21,12 +21,12 @@ namespace App.Api.Controllers
             _service = service;
         }
 
-        [HttpGet("ListaPessoas")]
+        [HttpPost("ListaPessoas")]
         public JsonResult ListaPessoas(string nome, int pesoMinimo, int pesoMaximo)
         {
             try
             {
-                return Json(new { Pessoas = _service.listaPessoas(nome, pesoMinimo, pesoMaximo) });
+                return Json(RetornoApi.Sucesso(_service.listaPessoas(nome, pesoMinimo, pesoMaximo)));
             }
             catch (Exception ex)
             {
@@ -39,7 +39,7 @@ namespace App.Api.Controllers
         {
             try
             {
-                return Json(new { Pessoa = _service.BuscaPorId(id) });
+                return Json(RetornoApi.Sucesso(_service.BuscaPorId(id)));
             }
             catch (Exception ex)
             {
@@ -47,21 +47,13 @@ namespace App.Api.Controllers
             }
         }
 
-        [HttpGet("Salvar")]
-        public JsonResult Salvar(string nome, int peso, DateTime dataNascimento, bool ativo, Guid cidadeId)
+        [HttpPost("Salvar")]
+        public JsonResult Salvar([FromBody] Pessoa obj)
         {
             try
             {
-                var obj = new Pessoa
-                {
-                    Nome = nome,
-                    DataNascimento = dataNascimento,
-                    Peso = peso,
-                    Ativo = ativo,
-                    CidadeId = cidadeId
-                };
                 _service.Salvar(obj);
-                return Json(true);
+                return Json(RetornoApi.Sucesso(true));
             }
             catch (Exception ex)
             {

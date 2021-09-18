@@ -30,10 +30,6 @@ namespace App.Application.Services
 
         public void Salvar(Cidade obj)
         {
-            if (String.IsNullOrEmpty(obj.Nome))
-            {
-                throw new Exception("Informe o  Nome!");
-            }
             _repository.Save(obj);
             _repository.SaveChanges();
         }

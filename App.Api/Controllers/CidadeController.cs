@@ -26,7 +26,7 @@ namespace App.Api.Controllers
         {
             try
             {
-                return Json(new { Cidades = _service.listaCidades() });
+                return Json(RetornoApi.Sucesso(_service.listaCidades()));
             }
             catch (Exception ex)
             {
@@ -39,7 +39,7 @@ namespace App.Api.Controllers
         {
             try
             {
-                return Json(new { Cidade = _service.BuscaPorId(id) });
+                return Json(RetornoApi.Sucesso(_service.BuscaPorId(id)));
             }
             catch (Exception ex)
             {
@@ -47,16 +47,16 @@ namespace App.Api.Controllers
             }
         }
 
-        [HttpGet("Salvar")]
-        public JsonResult Salvar(string cep, string uf, string nome)
+        [HttpPost("Salvar")]
+        public JsonResult Salvar([FromBody] Cidade obj)
         {
             try
             {
-                var obj = new Cidade
+                obj = new Cidade
                 {
-                    Cep = cep,
-                    Uf = uf,
-                    Nome = nome
+                    Cep = obj.Cep,
+                    Uf = obj.Uf,
+                    Nome = obj.Nome
                 };
                 _service.Salvar(obj);
                 return Json(true);
