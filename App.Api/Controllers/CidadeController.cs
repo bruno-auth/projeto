@@ -1,4 +1,5 @@
-﻿using App.Domain.Entities;
+﻿using App.Domain.DTO;
+using App.Domain.Entities;
 using App.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,33 +24,61 @@ namespace App.Api.Controllers
         [HttpGet("ListaCidades")]
         public JsonResult ListaCidades()
         {
-            return Json(new { Cidades = _service.listaCidades() });
+            try
+            {
+                return Json(new { Cidades = _service.listaCidades() });
+            }
+            catch (Exception ex)
+            {
+                return Json(RetornoApi.Erro(ex.Message));
+            }
         }
 
         [HttpGet("BuscaPorId")]
         public JsonResult BuscaPorId(Guid id)
         {
-            return Json(new { Cidade = _service.BuscaPorId(id) });
+            try
+            {
+                return Json(new { Cidade = _service.BuscaPorId(id) });
+            }
+            catch (Exception ex)
+            {
+                return Json(RetornoApi.Erro(ex.Message));
+            }
         }
 
         [HttpGet("Salvar")]
         public JsonResult Salvar(string cep, string uf, string nome)
         {
-            var obj = new Cidade
+            try
             {
-                Cep = cep,
-                Uf = uf,
-                Nome = nome
-            };
-            _service.Salvar(obj);
-            return Json(true);
+                var obj = new Cidade
+                {
+                    Cep = cep,
+                    Uf = uf,
+                    Nome = nome
+                };
+                _service.Salvar(obj);
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                return Json(RetornoApi.Erro(ex.Message));
+            }
         }
 
         [HttpGet("Remover")]
         public JsonResult Remover(Guid id)
         {
-            _service.Remover(id);
-            return Json(true);
+            try
+            {
+                _service.Remover(id);
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                return Json(RetornoApi.Erro(ex.Message));
+            }
         }
     }
 }

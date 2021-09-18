@@ -39,7 +39,7 @@ namespace App.Application.Services
                         Nome = p.Cidade.Nome
                     }
                 }).OrderByDescending(x => x.Nome);
-            return query.ToList()
+            return query.ToList();
         }
 
         public void Salvar(Pessoa obj)

@@ -57,6 +57,12 @@ namespace App.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+            );
         }
     }
 }

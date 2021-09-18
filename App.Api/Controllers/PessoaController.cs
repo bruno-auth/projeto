@@ -1,4 +1,5 @@
-﻿using App.Domain.Entities;
+﻿using App.Domain.DTO;
+using App.Domain.Entities;
 using App.Domain.Interfaces.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,28 +24,49 @@ namespace App.Api.Controllers
         [HttpGet("ListaPessoas")]
         public JsonResult ListaPessoas(string nome, int pesoMinimo, int pesoMaximo)
         {
-            return Json(new { Pessoas = _service.listaPessoas(nome, pesoMinimo, pesoMaximo) });
+            try
+            {
+                return Json(new { Pessoas = _service.listaPessoas(nome, pesoMinimo, pesoMaximo) });
+            }
+            catch (Exception ex)
+            {
+                return Json(RetornoApi.Erro(ex.Message));
+            }
         }
 
         [HttpGet("BuscaPorId")]
         public JsonResult BuscaPorId(Guid id)
         {
-            return Json(new { Pessoa = _service.BuscaPorId(id) });
+            try
+            {
+                return Json(new { Pessoa = _service.BuscaPorId(id) });
+            }
+            catch (Exception ex)
+            {
+                return Json(RetornoApi.Erro(ex.Message));
+            }
         }
 
         [HttpGet("Salvar")]
         public JsonResult Salvar(string nome, int peso, DateTime dataNascimento, bool ativo, Guid cidadeId)
         {
-            var obj = new Pessoa
+            try
             {
-                Nome = nome,
-                DataNascimento = dataNascimento,
-                Peso = peso,
-                Ativo = ativo,
-                CidadeId = cidadeId
-            };
-            _service.Salvar(obj);
-            return Json(true);
+                var obj = new Pessoa
+                {
+                    Nome = nome,
+                    DataNascimento = dataNascimento,
+                    Peso = peso,
+                    Ativo = ativo,
+                    CidadeId = cidadeId
+                };
+                _service.Salvar(obj);
+                return Json(true);
+            }
+            catch (Exception ex)
+            {
+                return Json(RetornoApi.Erro(ex.Message));
+            }
         }
     }
 }
